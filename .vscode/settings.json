@@ -1,0 +1,9 @@
+{
+    "[typescript]": {
+        "editor.formatOnSave": false,
+        "editor.defaultFormatter": null
+    },
+    "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma"
+    }
+}
