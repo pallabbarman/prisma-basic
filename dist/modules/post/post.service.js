@@ -1,9 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.removePost = exports.editPost = exports.findPost = exports.findAllPosts = exports.insertPost = void 0;
 /* eslint-disable object-curly-newline */
-import { Post, PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
-export const insertPost = async (data: Post): Promise<Post> => {
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+const insertPost = async (data) => {
     const result = await prisma.post.create({
         data,
         include: {
@@ -11,16 +12,14 @@ export const insertPost = async (data: Post): Promise<Post> => {
             category: true,
         },
     });
-
     return result;
 };
-
+exports.insertPost = insertPost;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const findAllPosts = async (options: any) => {
+const findAllPosts = async (options) => {
     const { sortBy, sortOrder, search, page, limit } = options;
     const skip = parseInt(limit, 10) * parseInt(page, 10) - parseInt(limit, 10) || 0;
     const take = parseInt(limit, 10) || 10;
-
     return prisma.$transaction(async (session) => {
         const result = await session.post.findMany({
             skip,
@@ -29,12 +28,11 @@ export const findAllPosts = async (options: any) => {
                 author: true,
                 category: true,
             },
-            orderBy:
-                sortBy && sortOrder
-                    ? {
-                          [sortBy]: sortOrder,
-                      }
-                    : { createAt: 'desc' },
+            orderBy: sortBy && sortOrder
+                ? {
+                    [sortBy]: sortOrder,
+                }
+                : { createAt: 'desc' },
             where: {
                 OR: [
                     {
@@ -54,17 +52,15 @@ export const findAllPosts = async (options: any) => {
                 ],
             },
         });
-
         const total = await session.post.count();
-
         return {
             data: result,
             total,
         };
     });
 };
-
-export const findPost = async (id: number): Promise<Post | null> => {
+exports.findAllPosts = findAllPosts;
+const findPost = async (id) => {
     const result = await prisma.post.findUnique({
         where: {
             id,
@@ -74,11 +70,10 @@ export const findPost = async (id: number): Promise<Post | null> => {
             category: true,
         },
     });
-
     return result;
 };
-
-export const editPost = async (id: number, payload: Partial<Post>): Promise<Post | null> => {
+exports.findPost = findPost;
+const editPost = async (id, payload) => {
     const result = await prisma.post.update({
         where: {
             id,
@@ -89,16 +84,15 @@ export const editPost = async (id: number, payload: Partial<Post>): Promise<Post
             category: true,
         },
     });
-
     return result;
 };
-
-export const removePost = async (id: number): Promise<Post> => {
+exports.editPost = editPost;
+const removePost = async (id) => {
     const result = await prisma.post.delete({
         where: {
             id,
         },
     });
-
     return result;
 };
+exports.removePost = removePost;

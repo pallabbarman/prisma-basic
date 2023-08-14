@@ -1,78 +1,79 @@
-/* eslint-disable object-curly-newline */
-import { Request, Response } from 'express';
-import { editPost, findAllPosts, findPost, insertPost, removePost } from './post.service';
-
-export const createPost = async (req: Request, res: Response) => {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deletePost = exports.updatePost = exports.getPost = exports.getAllPosts = exports.createPost = void 0;
+const post_service_1 = require("./post.service");
+const createPost = async (req, res) => {
     try {
-        const result = await insertPost(req.body);
-
+        const result = await (0, post_service_1.insertPost)(req.body);
         res.send({
             success: true,
             message: 'Post created successfully!',
             data: result,
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.send(error);
     }
 };
-
-export const getAllPosts = async (req: Request, res: Response) => {
+exports.createPost = createPost;
+const getAllPosts = async (req, res) => {
     const options = req.query;
     try {
-        const result = await findAllPosts(options);
-
+        const result = await (0, post_service_1.findAllPosts)(options);
         res.send({
             success: true,
             message: 'Posts retrieve successfully!',
             total: result.total,
             data: result.data,
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.send(error);
     }
 };
-
-export const getPost = async (req: Request, res: Response) => {
+exports.getAllPosts = getAllPosts;
+const getPost = async (req, res) => {
     try {
         const id = Number(req.params?.id);
-        const result = await findPost(id);
-
+        const result = await (0, post_service_1.findPost)(id);
         res.send({
             success: true,
             message: 'Post retrieve successfully!',
             data: result,
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.send(error);
     }
 };
-
-export const updatePost = async (req: Request, res: Response) => {
+exports.getPost = getPost;
+const updatePost = async (req, res) => {
     const id = Number(req.params?.id);
     try {
-        const result = await editPost(id, req.body);
-
+        const result = await (0, post_service_1.editPost)(id, req.body);
         res.send({
             success: true,
             message: 'Post updated successfully!',
             data: result,
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.send(error);
     }
 };
-
-export const deletePost = async (req: Request, res: Response) => {
+exports.updatePost = updatePost;
+const deletePost = async (req, res) => {
     const id = Number(req.params?.id);
     try {
-        const result = await removePost(id);
-
+        const result = await (0, post_service_1.removePost)(id);
         res.send({
             success: true,
             message: 'Post deleted successfully!',
             data: result,
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.send(error);
     }
 };
+exports.deletePost = deletePost;
